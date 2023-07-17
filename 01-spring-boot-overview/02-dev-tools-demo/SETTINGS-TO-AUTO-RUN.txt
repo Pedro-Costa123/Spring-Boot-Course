@@ -1,2 +1,0 @@
-Settings -> Build, Execution, Deployment -> Compiler -> Build project automatically -> Apply -> Ok
-Settings -> Advanced Settings -> Allow auto-make to start even if ... -> Apply -> Ok
