@@ -2,10 +2,9 @@ package com.pedro.rest.rest;
 
 import com.pedro.rest.entity.Student;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,31 @@ public class StudentRestController {
 
     @GetMapping("/students/{studentId}")
     public Student getStudent(@PathVariable int studentId) {
+
+        if (studentId >= students.size() || studentId < 0) {
+            throw new StudentNotFoundException("Student id not found - " + studentId);
+        }
+
         return students.get(studentId);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc) {
+        StudentErrorResponse studentErrorResponse = new StudentErrorResponse();
+        studentErrorResponse.setStatus(404);
+        studentErrorResponse.setMessage((exc.getMessage()));
+        studentErrorResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(studentErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StudentErrorResponse> handleException(Exception exc) {
+        StudentErrorResponse studentErrorResponse = new StudentErrorResponse();
+        studentErrorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        studentErrorResponse.setMessage((exc.getMessage()));
+        studentErrorResponse.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(studentErrorResponse, HttpStatus.BAD_REQUEST);
+
     }
 
 }
