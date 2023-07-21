@@ -1,6 +1,7 @@
 package com.pedro.springboot.thymeleafdemo.controller;
 
 import com.pedro.springboot.thymeleafdemo.entity.Employee;
+import com.pedro.springboot.thymeleafdemo.service.EmployeeService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,37 +15,25 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-	// load employee data
+    private EmployeeService employeeService;
 
-	private List<Employee> theEmployees;
+    //autowire is optional since one constructor only
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
-	@PostConstruct
-	private void loadData() {
+    // add mapping for "/list"
 
-		// create employees
-		Employee emp1 = new Employee("Leslie", "Andrews", "leslie@luv2code.com");
-		Employee emp2 = new Employee("Emma", "Baumgarten", "emma@luv2code.com");
-		Employee emp3 = new Employee("Avani", "Gupta", "avani@luv2code.com");
+    @GetMapping("/list")
+    public String listEmployees(Model theModel) {
 
-		// create the list
-		theEmployees = new ArrayList<>();
+        List<Employee> theEmployees = employeeService.findAll();
 
-		// add to the list
-		theEmployees.add(emp1);
-		theEmployees.add(emp2);
-		theEmployees.add(emp3);
-	}
+        // add to the spring model
+        theModel.addAttribute("employees", theEmployees);
 
-	// add mapping for "/list"
-
-	@GetMapping("/list")
-	public String listEmployees(Model theModel) {
-
-		// add to the spring model
-		theModel.addAttribute("employees", theEmployees);
-
-		return "list-employees";
-	}
+        return "list-employees";
+    }
 }
 
 
