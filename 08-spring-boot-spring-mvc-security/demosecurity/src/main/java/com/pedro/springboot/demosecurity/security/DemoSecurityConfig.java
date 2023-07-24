@@ -39,9 +39,13 @@ public class DemoSecurityConfig {
                         .requestMatchers("/leaders/**").hasRole("MANAGER")
                         .requestMatchers("/systems/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/showMyLoginPage")
+                .formLogin(form -> form
+                        .loginPage("/showMyLoginPage")
                         .loginProcessingUrl("/authenticateTheUser").permitAll())
-                        .logout(LogoutConfigurer::permitAll);
+                .logout(LogoutConfigurer::permitAll)
+                .exceptionHandling(config -> config
+                        .accessDeniedPage("/access-denied")
+        );
 
         return http.build();
     }
