@@ -1,10 +1,7 @@
 package com.pedro.crudemo;
 
 import com.pedro.crudemo.dao.AppDAO;
-import com.pedro.crudemo.entity.Course;
-import com.pedro.crudemo.entity.Instructor;
-import com.pedro.crudemo.entity.InstructorDetail;
-import com.pedro.crudemo.entity.Review;
+import com.pedro.crudemo.entity.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,9 +34,62 @@ public class CrudemoApplication {
 //            deleteCourse(appDAO);
 //            createCourseAndReviews(appDAO);
 //            retrieveCourseAndReviews(appDAO);
-            deleteCourseAndReviews(appDAO);
-
+//            deleteCourseAndReviews(appDAO);
+//            createCourseAndStudents(appDAO);
+//            findCourseAndStudents(appDAO);
+//            findStudentsAndCourses(appDAO);
+//            addMoreCoursesForStudents(appDAO);
+//            deleteCourse(appDAO);
+            deleteStudent(appDAO);
         };
+    }
+
+    private void deleteStudent(AppDAO appDAO) {
+        int id = 2;
+        System.out.println("Deleting course id: " + id);
+        appDAO.deleteStudentById(id);
+        System.out.println("done");
+    }
+
+    private void addMoreCoursesForStudents(AppDAO appDAO) {
+        int id = 1;
+        Student student = appDAO.findStudentAndCourseByStudentId(id);
+        Course course1 = new Course("ServiceNow Guide 2023");
+        Course course2 = new Course("Unreal Engine 5 - 2023");
+        student.addCourse(course1);
+        student.addCourse(course2);
+        System.out.println("Update student: " + student);
+        System.out.println("Associated courses: " + student.getCourses());
+        appDAO.update(student);
+        System.out.println("done");
+    }
+
+    private void findStudentsAndCourses(AppDAO appDAO) {
+        int id = 1;
+        Student student = appDAO.findStudentAndCourseByStudentId(id);
+        System.out.println("Loaded student: " + student);
+        System.out.println("Courses: " + student.getCourses());
+        System.out.println("done");
+    }
+
+    private void findCourseAndStudents(AppDAO appDAO) {
+        int id = 10;
+        Course course = appDAO.findCourseAndStudentsByCourseId(id);
+        System.out.println("Loaded course: " + course);
+        System.out.println("Students: " + course.getStudents());
+        System.out.println("done");
+    }
+
+    private void createCourseAndStudents(AppDAO appDAO) {
+        Course course = new Course("Flutter Guide - 2023");
+        Student student = new Student("Pedro", "Costa", "pedro@gmail.com");
+        Student student1 = new Student("Pedro - 1", "Costa - 1", "pedro@gmail.com - 1");
+        course.addStudent(student);
+        course.addStudent(student1);
+        System.out.println("Saving the course: " + course);
+        System.out.println("Associated students: " + course.getStudents());
+        appDAO.save(course);
+        System.out.println("done");
     }
 
     private void deleteCourseAndReviews(AppDAO appDAO) {
