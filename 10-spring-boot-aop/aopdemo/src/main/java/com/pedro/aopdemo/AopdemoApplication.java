@@ -22,10 +22,19 @@ public class AopdemoApplication {
 	}
 
 	private void demoTheBeforeAdvice(AccountDAO accountDAO, MembershipDAO membershipDAO) {
+		//call the business method
 		Account account = new Account();
 		accountDAO.addAccount(account, true);
 		accountDAO.doWork();
 
+		//call the accountdao getter/setter
+		accountDAO.setName("Name");
+		accountDAO.setServiceCode("ServiceCode");
+
+		String name = accountDAO.getName();
+		String code = accountDAO.getServiceCode();
+
+		//call the membership business method
 		membershipDAO.addAccount();
 		membershipDAO.goToSleep();
 	}
