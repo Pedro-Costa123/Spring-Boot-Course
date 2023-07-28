@@ -14,6 +14,14 @@ public class AccountDAOImpl implements AccountDAO {
 
     @Override
     public List<Account> findAccounts() {
+        return findAccounts(false);
+    }
+
+    @Override
+    public List<Account> findAccounts(boolean tripWire) {
+        if(tripWire) {
+            throw new RuntimeException("Exception Test");
+        }
         List<Account> accounts = new ArrayList<>();
         Account account = new Account("Name", "Level");
         Account account1 = new Account("Name - 1", "Level - 1");
